@@ -1,17 +1,19 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trail12/pages/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trail12/providers/user_provider.dart';
 
-class signIn extends StatefulWidget {
+class signIn extends ConsumerStatefulWidget {
   const signIn({
     super.key,
   });
   @override
-  State<signIn> createState() => _MyHomePageState();
+  ConsumerState<signIn> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<signIn> {
+class _MyHomePageState extends ConsumerState<signIn> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _globalKey = GlobalKey();
   final TextEditingController emailCtrl = TextEditingController();
@@ -99,6 +101,9 @@ class _MyHomePageState extends State<signIn> {
                         try {
                           await _auth.signInWithEmailAndPassword(
                               email: emailCtrl.text, password: passwordCtrl.text);
+                          ref.read(userProvider.notifier).signinFetcher(emailCtrl.text);
+                          if(!mounted)return;
+                          Navigator.pop(context);
                         } catch (e) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text(e.toString())));
