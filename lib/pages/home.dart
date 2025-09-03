@@ -12,12 +12,19 @@ class Home extends ConsumerWidget {
     LocalUser currentUser =ref.read(userProvider);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[200],
+            shape  : RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(20)
+              )
+            ),
         leading: Builder(
           builder: (context) {
             return GestureDetector(
               onTap: ()=> Scaffold.of(context).openDrawer(),
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
+
                 child: CircleAvatar(backgroundImage: NetworkImage(ref.watch(userProvider).user.profilPic)),
               ),
             );
